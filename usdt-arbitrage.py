@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import requests, json, hashlib, hmac, time
 binance_url = "https://api.binance.us/api/v3/"
 
