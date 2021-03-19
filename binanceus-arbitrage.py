@@ -25,7 +25,6 @@ logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s',
 
 headers = {"X-MBX-APIKEY": api_key, "Accept": "application/json"}
 
-
 stablecoins = [
     "USD",
     "USDC",
@@ -191,7 +190,7 @@ class ArbitrageTrader:
             return [None, None, 0, 0]
 
         logging.info("Deal found: BUY {} at {}, SELL {} at {}, for PROFIT: {}%".format(min_pair, min_pair_ask, max_pair,
-                                                                              max_pair_bid, percent_diff))
+                                                                                       max_pair_bid, percent_diff))
         return [min_pair, max_pair, percent_diff, max_trade]
 
     def execute_trade_seq(self, min_pair, max_pair, token, max_trade):
@@ -266,11 +265,10 @@ while True:
     sync_timestamp()
     trader.update_prices()
     for trade_token in base_tokens:
-        while True:
-            trade_min_pair, trade_max_pair, trade_percent_diff, this_max_trade = trader.find_best_deal(trade_token)
-            if not trade_percent_diff:
-                break
-            logging.info("Executing Trade Sequence: BUY {}, SELL {}, for PROFIT: {}%".format(trade_min_pair, trade_max_pair,
-                                                                                      trade_percent_diff))
-            trader.execute_trade_seq(trade_min_pair, trade_max_pair, trade_token, this_max_trade)
+        trade_min_pair, trade_max_pair, trade_percent_diff, this_max_trade = trader.find_best_deal(trade_token)
+        if not trade_percent_diff:
+            continue
+        logging.info("Executing Trade Sequence: BUY {}, SELL {}, for PROFIT: {}%".format(trade_min_pair, trade_max_pair,
+                                                                                         trade_percent_diff))
+        trader.execute_trade_seq(trade_min_pair, trade_max_pair, trade_token, this_max_trade)
     time.sleep(sleep_seconds)
