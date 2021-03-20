@@ -226,7 +226,7 @@ class ArbitrageTrader:
         if float(self.get_ticker_balances([dest_stablecoin])[dest_stablecoin]) > max_trade:
             return True
         logging.info("Swapping {} for {}".format(self.current_stablecoin, dest_stablecoin))
-        dest_stablecoin_quantity = max_trade
+        dest_stablecoin_quantity = min([max_trade, float(self.get_ticker_balances([self.current_stablecoin])[self.current_stablecoin])])
         if self.current_stablecoin == "USD":
             return self.execute_trade(dest_stablecoin + "USD", "BUY", dest_stablecoin_quantity)
         elif dest_stablecoin == "USD":
